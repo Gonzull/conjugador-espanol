@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Conjugador · practica verbos en español</title>
+<meta name="description" content="Practica la conjugación de verbos en español: modo indicativo, modo subjuntivo y todos sus tiempos, con ejercicios de completar oraciones.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<div class="tablero">
+
+  <header class="cabecera">
+    <p class="cabecera-marca">cuaderno de verbos</p>
+    <h1 class="cabecera-titulo">Conjugador de español</h1>
+    <p class="cabecera-sub">Elige un verbo, un modo y un tiempo. El resto se conjuga solo.</p>
+  </header>
+
+  <section class="panel panel-verbo" aria-label="Elegir verbo">
+    <label class="etiqueta" for="verbo-input">Verbo a practicar</label>
+    <div class="fila-verbo">
+      <div class="verbo-buscador">
+        <input
+          id="verbo-input"
+          type="text"
+          autocomplete="off"
+          spellcheck="false"
+          placeholder="Escribe o elige un verbo (hablar, comer, tener...)"
+          role="combobox"
+          aria-expanded="false"
+          aria-autocomplete="list"
+          aria-controls="verbo-panel"
+        >
+        <button type="button" id="btn-desplegar" class="btn-desplegar" aria-label="Mostrar lista de verbos">▾</button>
+        <div id="verbo-panel" class="verbo-panel" role="listbox" hidden></div>
+      </div>
+      <button type="button" id="btn-aleatorio" class="boton-secundario" title="Elegir un verbo al azar">🎲 Al azar</button>
+    </div>
+    <p id="aviso-verbo" class="aviso"></p>
+    <p class="verbo-actual-linea">Verbo seleccionado: <strong id="verbo-actual">hablar</strong> · <span id="contador-verbos"></span></p>
+  </section>
+
+  <section class="panel" aria-label="Elegir modo y tiempo">
+    <div id="modo-tabs" class="modo-tabs" role="tablist" aria-label="Modo verbal"></div>
+    <div id="tiempo-menu" class="tiempo-menu" role="tablist" aria-label="Tiempo verbal"></div>
+  </section>
+
+  <section class="panel panel-conjugacion" aria-label="Tabla de conjugación">
+    <h2 id="tiempo-titulo" class="titulo-tiempo">Modo indicativo · Presente</h2>
+    <table class="tabla-conjugacion">
+      <tbody id="tabla-conjugacion"></tbody>
+    </table>
+  </section>
+
+  <section class="panel panel-ejercicio" aria-label="Ejercicio de completar">
+    <h2 class="titulo-tiempo">Completa la oración</h2>
+    <p id="ejercicio-texto" class="ejercicio-texto"></p>
+    <div class="fila-ejercicio">
+      <input id="ejercicio-input" type="text" autocomplete="off" spellcheck="false" placeholder="Escribe la forma correcta...">
+      <button type="button" id="ejercicio-comprobar" class="boton-primario">Comprobar</button>
+      <button type="button" id="ejercicio-nuevo" class="boton-secundario">Otra oración</button>
+    </div>
+    <p id="ejercicio-feedback" class="ejercicio-feedback"></p>
+  </section>
+
+  <footer class="pie">
+    <p>Cobertura amplia de verbos regulares, irregulares y con cambio de raíz. Algún verbo muy poco común podría tener una excepción no contemplada.</p>
+  </footer>
+
+</div>
+
+<script src="js/verbs-data.js"></script>
+<script src="js/conjugator.js"></script>
+<script src="js/sentences.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

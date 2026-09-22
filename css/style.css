@@ -1,0 +1,360 @@
+/* =========================================================================
+   TOKENS
+   ========================================================================= */
+:root {
+  --pizarra: #16302b;
+  --pizarra-alta: #1c3a34;
+  --marco: #5b3d2b;
+  --tiza: #f1efe4;
+  --tiza-tenue: #b9c9c1;
+  --tiza-amarilla: #e8c468;
+  --tiza-coral: #e2836f;
+  --linea: rgba(241, 239, 228, 0.14);
+  --radio: 3px;
+  --fuente-display: 'Fraunces', serif;
+  --fuente-texto: 'IBM Plex Sans', sans-serif;
+  --fuente-mono: 'IBM Plex Mono', monospace;
+}
+
+* { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  background: var(--pizarra);
+  background-image:
+    radial-gradient(ellipse at 20% -10%, rgba(255,255,255,0.05), transparent 55%),
+    repeating-linear-gradient(0deg, rgba(255,255,255,0.025) 0px, rgba(255,255,255,0.025) 1px, transparent 1px, transparent 38px);
+  color: var(--tiza);
+  font-family: var(--fuente-texto);
+  line-height: 1.5;
+}
+
+.tablero {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 2.5rem 1.25rem 4rem;
+  border-left: 3px solid rgba(226, 131, 111, 0.4);
+  padding-left: 1.5rem;
+}
+
+@media (max-width: 600px) {
+  .tablero { padding: 1.75rem 1rem 3rem; border-left: none; }
+}
+
+/* =========================================================================
+   CABECERA
+   ========================================================================= */
+.cabecera { margin-bottom: 2rem; }
+
+.cabecera-marca {
+  font-family: var(--fuente-mono);
+  font-size: 0.78rem;
+  letter-spacing: 0.04em;
+  color: var(--tiza-amarilla);
+  margin: 0 0 0.6rem;
+}
+
+.cabecera-titulo {
+  font-family: var(--fuente-display);
+  font-weight: 600;
+  font-size: clamp(2rem, 6vw, 2.9rem);
+  margin: 0 0 0.5rem;
+  letter-spacing: 0.01em;
+}
+
+.cabecera-sub {
+  color: var(--tiza-tenue);
+  font-size: 1.02rem;
+  margin: 0;
+  max-width: 46ch;
+}
+
+/* =========================================================================
+   PANELES
+   ========================================================================= */
+.panel {
+  border-top: 1px solid var(--linea);
+  padding: 1.5rem 0;
+}
+
+.etiqueta {
+  display: block;
+  font-size: 0.85rem;
+  color: var(--tiza-tenue);
+  margin-bottom: 0.5rem;
+}
+
+.fila-verbo {
+  display: flex;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+  align-items: flex-start;
+}
+
+.verbo-buscador {
+  position: relative;
+  flex: 1;
+  min-width: 220px;
+  display: flex;
+}
+
+#verbo-input {
+  flex: 1;
+  width: 100%;
+  background: var(--pizarra-alta);
+  border: 1px solid var(--linea);
+  border-radius: var(--radio);
+  color: var(--tiza);
+  font-family: var(--fuente-texto);
+  font-size: 1.05rem;
+  padding: 0.7rem 2.5rem 0.7rem 0.85rem;
+}
+
+.btn-desplegar {
+  position: absolute;
+  right: 0;
+  top: 0;
+  height: 100%;
+  width: 2.4rem;
+  background: transparent;
+  border: none;
+  color: var(--tiza-tenue);
+  font-size: 1.1rem;
+  cursor: pointer;
+  border-radius: 0 var(--radio) var(--radio) 0;
+}
+.btn-desplegar:hover { color: var(--tiza-amarilla); }
+
+.verbo-panel {
+  position: absolute;
+  top: calc(100% + 0.35rem);
+  left: 0;
+  right: 0;
+  max-height: 280px;
+  overflow-y: auto;
+  background: var(--pizarra-alta);
+  border: 1px solid var(--linea);
+  border-radius: var(--radio);
+  box-shadow: 0 10px 24px rgba(0,0,0,0.35);
+  z-index: 20;
+  padding: 0.3rem;
+}
+
+.verbo-item {
+  display: block;
+  width: 100%;
+  text-align: left;
+  background: transparent;
+  border: none;
+  color: var(--tiza);
+  font-family: var(--fuente-texto);
+  font-size: 0.98rem;
+  padding: 0.5rem 0.6rem;
+  border-radius: var(--radio);
+  cursor: pointer;
+}
+.verbo-item:hover,
+.verbo-item.is-resaltado {
+  background: rgba(232, 196, 104, 0.16);
+  color: var(--tiza-amarilla);
+}
+
+.verbo-panel-vacio {
+  padding: 0.6rem;
+  color: var(--tiza-tenue);
+  font-size: 0.9rem;
+}
+
+.verbo-panel-contador {
+  padding: 0.3rem 0.6rem 0.5rem;
+  color: var(--tiza-tenue);
+  font-size: 0.75rem;
+  font-family: var(--fuente-mono);
+  border-bottom: 1px dashed var(--linea);
+  margin-bottom: 0.2rem;
+}
+
+#verbo-input:focus,
+#ejercicio-input:focus {
+  outline: 2px solid var(--tiza-amarilla);
+  outline-offset: 1px;
+}
+
+.boton-secundario,
+.boton-primario {
+  font-family: var(--fuente-texto);
+  font-size: 0.95rem;
+  font-weight: 500;
+  border-radius: var(--radio);
+  padding: 0.7rem 1.1rem;
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: transform 0.12s ease, background 0.15s ease;
+}
+
+.boton-secundario {
+  background: transparent;
+  border: 1px solid var(--linea);
+  color: var(--tiza);
+}
+.boton-secundario:hover { border-color: var(--tiza-amarilla); }
+
+.boton-primario {
+  background: var(--tiza-coral);
+  color: #201410;
+}
+.boton-primario:hover { transform: translateY(-1px); }
+
+.aviso {
+  color: var(--tiza-coral);
+  font-size: 0.85rem;
+  min-height: 1.1rem;
+  margin: 0.5rem 0 0;
+}
+
+.verbo-actual-linea {
+  margin: 0.9rem 0 0;
+  color: var(--tiza-tenue);
+  font-size: 0.95rem;
+}
+.verbo-actual-linea strong {
+  color: var(--tiza-amarilla);
+  font-family: var(--fuente-display);
+  font-size: 1.15rem;
+  font-weight: 600;
+}
+
+/* =========================================================================
+   TABS DE MODO Y TIEMPO
+   ========================================================================= */
+.modo-tabs {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.modo-tab {
+  flex: 1;
+  background: transparent;
+  border: 1px solid var(--linea);
+  border-radius: var(--radio);
+  color: var(--tiza-tenue);
+  font-family: var(--fuente-texto);
+  font-size: 0.95rem;
+  font-weight: 500;
+  padding: 0.65rem 0.8rem;
+  cursor: pointer;
+}
+.modo-tab.is-active {
+  color: var(--pizarra);
+  background: var(--tiza-amarilla);
+  border-color: var(--tiza-amarilla);
+}
+
+.tiempo-menu {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.tiempo-btn {
+  background: var(--pizarra-alta);
+  border: 1px solid var(--linea);
+  border-radius: var(--radio);
+  color: var(--tiza-tenue);
+  font-family: var(--fuente-texto);
+  font-size: 0.85rem;
+  padding: 0.5rem 0.75rem;
+  cursor: pointer;
+}
+.tiempo-btn.is-active {
+  color: var(--tiza);
+  border-color: var(--tiza-coral);
+  box-shadow: inset 0 -2px 0 var(--tiza-coral);
+}
+
+/* =========================================================================
+   TABLA DE CONJUGACIÓN
+   ========================================================================= */
+.titulo-tiempo {
+  font-family: var(--fuente-display);
+  font-weight: 600;
+  font-size: 1.4rem;
+  margin: 0 0 1rem;
+}
+
+.tabla-conjugacion {
+  width: 100%;
+  border-collapse: collapse;
+}
+.tabla-conjugacion tr { border-bottom: 1px dashed var(--linea); }
+.tabla-conjugacion tr:last-child { border-bottom: none; }
+.tabla-conjugacion td { padding: 0.65rem 0.4rem; }
+
+.col-pronombre {
+  color: var(--tiza-tenue);
+  font-size: 0.92rem;
+  width: 42%;
+}
+.col-forma {
+  font-family: var(--fuente-mono);
+  font-size: 1.05rem;
+  color: var(--tiza-amarilla);
+  font-weight: 500;
+}
+
+/* =========================================================================
+   EJERCICIO
+   ========================================================================= */
+.ejercicio-texto {
+  font-size: 1.15rem;
+  line-height: 1.7;
+  margin: 0 0 1.1rem;
+}
+
+.hueco-marcador {
+  display: inline-block;
+  border-bottom: 2px solid var(--tiza-coral);
+  min-width: 3ch;
+  color: transparent;
+}
+
+.fila-ejercicio {
+  display: flex;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+}
+
+#ejercicio-input {
+  flex: 1;
+  min-width: 200px;
+  background: var(--pizarra-alta);
+  border: 1px solid var(--linea);
+  border-radius: var(--radio);
+  color: var(--tiza);
+  font-family: var(--fuente-mono);
+  font-size: 1rem;
+  padding: 0.7rem 0.85rem;
+}
+
+.ejercicio-feedback {
+  margin: 0.9rem 0 0;
+  font-size: 0.95rem;
+  min-height: 1.2rem;
+}
+.ejercicio-feedback.is-correcto { color: #8fd19e; }
+.ejercicio-feedback.is-incorrecto { color: var(--tiza-coral); }
+
+/* =========================================================================
+   PIE
+   ========================================================================= */
+.pie {
+  margin-top: 2rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--linea);
+  color: var(--tiza-tenue);
+  font-size: 0.82rem;
+}
+.pie p { margin: 0; }
