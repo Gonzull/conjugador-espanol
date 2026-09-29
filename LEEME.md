@@ -42,6 +42,11 @@ quiera practicar sin depender de una app de terceros.
   - Los verbos totalmente irregulares más comunes (ser, estar, ir, tener,
     hacer, poder, decir, querer...) y sus compuestos (proponer, mantener,
     atraer, sonreír...) mediante una regla de "verbo base + prefijo".
+- **Formas no personales** (entre la tabla y el ejercicio): infinitivo,
+  gerundio (*-ando / -iendo*) y participio (*-ado / -ido*) del verbo
+  elegido, con un ejemplo de uso (*Estoy diciendo*, *He dicho*) y una
+  etiqueta **irregular** cuando la forma no sigue la terminación habitual
+  (diciendo, dicho, leyendo, leído, durmiendo, puesto...).
 - Un **ejercicio de completar** con oraciones genéricas por tiempo verbal
   (con distintas variantes para no repetir siempre lo mismo), corrección
   automática y botón para generar otro ejemplo.

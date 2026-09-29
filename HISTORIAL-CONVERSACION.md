@@ -136,6 +136,19 @@ pero conviene priorizar los verbos y tiempos más usados).
 
 **Entregado:** ver v1.6 en `BITACORA.md`.
 
+### 10. Gerundio y participio
+
+> *"se que falta algo, el ado, edo, ido, y ando, endo, iendo, se que no
+> funciona en todos los verbos y no es algo aparte, es posible ponerlo en
+> la pagina como entremedio de modo indicativo y completa la oracion"*
+
+Se agregó la sección "Formas no personales" entre la tabla y el
+ejercicio, con marca de irregular. Al revisar las formas de todos los
+verbos aparecieron y se corrigieron varios bugs del motor (participios
+con tilde de más, proseguir/derretir, reñir/teñir/ceñir, revolver).
+
+**Entregado:** ver v1.7 en `BITACORA.md`.
+
 ---
 
 *Nota: este historial se escribió a partir de los pedidos reales de la

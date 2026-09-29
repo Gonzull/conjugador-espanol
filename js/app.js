@@ -57,6 +57,7 @@ function init() {
   els.tiempoUso = document.getElementById('tiempo-uso');
   els.ejercicioPista = document.getElementById('ejercicio-pista');
   els.ayudaPasos = document.getElementById('ayuda-pasos');
+  els.noPersonales = document.getElementById('no-personales');
 
   wireIdioma();
   aplicarIdioma();
@@ -271,7 +272,42 @@ function actualizarTodo() {
 
   formasActuales = conjugate(state.verbo, state.tiempo) || [];
   renderTabla();
+  renderNoPersonales();
   renderEjercicio();
+}
+
+/* -------------------------------------------------------------------------
+   Formas no personales: infinitivo, gerundio (-ando/-iendo) y
+   participio (-ado/-ido). Se marca "irregular" cuando la forma no es la
+   que daría la regla simple (raíz + terminación).
+   ------------------------------------------------------------------------- */
+function renderNoPersonales() {
+  const v = state.verbo;
+  const clase = clasificar(v);
+  if (!clase) { els.noPersonales.innerHTML = ''; return; }
+  const raiz = getRoot(v);
+  const gerundio = getGerundio(v);
+  const participio = getParticipio(v);
+  const gerRegular = raiz + (clase === 'ar' ? 'ando' : 'iendo');
+  const partRegular = raiz + (clase === 'ar' ? 'ado' : 'ido');
+  const term = t('npTerminaciones');
+
+  const tarjeta = (nombre, terminaciones, forma, uso, ejemplo, esIrregular) => `
+    <div class="np-tarjeta">
+      <div class="np-cabeza">
+        <span class="np-nombre">${nombre}</span>
+        <span class="np-term" lang="es">${terminaciones}</span>
+      </div>
+      <div class="np-forma" lang="es">${escapeHtml(forma)}${esIrregular
+        ? ` <span class="np-irregular" title="${escapeHtml(t('npIrregularTitulo'))}">${escapeHtml(t('npIrregular'))}</span>` : ''}</div>
+      <p class="np-uso">${escapeHtml(uso)}</p>
+      <p class="np-ejemplo">${escapeHtml(ejemplo)}</p>
+    </div>`;
+
+  els.noPersonales.innerHTML =
+    tarjeta(t('npInfinitivo'), term.infinitivo, v, t('npUsoInfinitivo'), t('npEjInfinitivo')(v), false) +
+    tarjeta(t('npGerundio'), term.gerundio, gerundio, t('npUsoGerundio'), t('npEjGerundio')(gerundio), gerundio !== gerRegular) +
+    tarjeta(t('npParticipio'), term.participio, participio, t('npUsoParticipio'), t('npEjParticipio')(participio), participio !== partRegular);
 }
 
 function renderTabla() {

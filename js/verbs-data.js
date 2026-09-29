@@ -295,6 +295,7 @@ const VERBS_DB = {
     corregir: 'i_i', elegir: 'i_i', reñir: 'i_i',
     teñir: 'i_i', ceñir: 'i_i', concebir: 'i_i', gemir: 'i_i',
     henchir: 'i_i', revestir: 'i_i', investir: 'i_i', regir: 'i_i',
+    proseguir: 'i_i', derretir: 'i_i',
 
     // e -> ie (presente) / e -> i (pretérito 3ª, gerundio, subjuntivo)
     sentir: 'ie_i', mentir: 'ie_i', preferir: 'ie_i', herir: 'ie_i',

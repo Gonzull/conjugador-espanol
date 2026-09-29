@@ -461,3 +461,53 @@ html[lang="zh-CN"] .cabecera-titulo { letter-spacing: 0.04em; }
   font-size: 0.85em;
   margin-left: 0.3rem;
 }
+
+/* =========================================================================
+   FORMAS NO PERSONALES (infinitivo, gerundio, participio)
+   ========================================================================= */
+.no-personales-intro {
+  margin: -0.5rem 0 1rem;
+  color: var(--tiza-tenue);
+  font-size: 0.9rem;
+}
+.no-personales {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.75rem;
+}
+@media (max-width: 640px) {
+  .no-personales { grid-template-columns: 1fr; }
+}
+.np-tarjeta {
+  background: var(--pizarra-alta);
+  border: 1px solid var(--linea);
+  border-radius: var(--radio);
+  padding: 0.8rem 0.9rem;
+}
+.np-cabeza {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+.np-nombre { color: var(--tiza-tenue); font-size: 0.85rem; }
+.np-term { font-family: var(--fuente-mono); font-size: 0.72rem; color: var(--tiza-tenue); opacity: 0.75; }
+.np-forma {
+  font-family: var(--fuente-mono);
+  color: var(--tiza-amarilla);
+  font-size: 1.2rem;
+  margin: 0.35rem 0 0.5rem;
+  overflow-wrap: anywhere;
+}
+.np-irregular {
+  font-family: var(--fuente-texto), var(--fuente-zh);
+  font-size: 0.68rem;
+  color: var(--tiza-coral);
+  border: 1px solid var(--tiza-coral);
+  border-radius: 999px;
+  padding: 0.05rem 0.45rem;
+  vertical-align: middle;
+}
+.np-uso { margin: 0; color: var(--tiza-tenue); font-size: 0.85rem; }
+.np-ejemplo { margin: 0.3rem 0 0; color: var(--tiza); font-size: 0.9rem; font-style: italic; }

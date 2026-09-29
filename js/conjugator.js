@@ -48,7 +48,7 @@ const PARTICIPIOS_IRREGULARES = {
   hacer: 'hecho', decir: 'dicho', poner: 'puesto', ver: 'visto', escribir: 'escrito',
   abrir: 'abierto', cubrir: 'cubierto', descubrir: 'descubierto', morir: 'muerto',
   romper: 'roto', volver: 'vuelto', devolver: 'devuelto', envolver: 'envuelto',
-  resolver: 'resuelto', satisfacer: 'satisfecho', imprimir: 'impreso', freír: 'frito',
+  resolver: 'resuelto', revolver: 'revuelto', satisfacer: 'satisfecho', imprimir: 'impreso', freír: 'frito',
   ir: 'ido', ser: 'sido', proponer: 'propuesto', suponer: 'supuesto', disponer: 'dispuesto',
   exponer: 'expuesto', imponer: 'impuesto', oponer: 'opuesto', componer: 'compuesto',
   reponer: 'repuesto', contradecir: 'contradicho', deshacer: 'deshecho', rehacer: 'rehecho',
@@ -188,6 +188,12 @@ function ajusteOrtografico(infinitivo, raiz, terminacion) {
     }
   }
 
+  // Tras "ñ" o "ll" la "i" átona de la terminación desaparece:
+  // riñó (no "riñió"), riñeron, riñendo, tiñera...
+  if ((raiz.endsWith('ñ') || raiz.endsWith('ll')) && terminacion[0] === 'i' && esVocal(terminacion[1] || '')) {
+    terminacion = terminacion.slice(1);
+  }
+
   return raiz + terminacion;
 }
 
@@ -214,7 +220,9 @@ function participioRegular(infinitivo, raiz) {
   const clase = clasificar(infinitivo);
   if (clase === 'ar') return raiz + 'ado';
   const ultima = raiz[raiz.length - 1];
-  return esVocal(ultima) ? raiz + 'ído' : raiz + 'ido';
+  // Tilde solo tras vocal fuerte (leído, caído, oído), no tras "u"
+  // (incluido, construido, seguido).
+  return esFuerte(ultima) ? raiz + 'ído' : raiz + 'ido';
 }
 
 const GERUNDIOS_IRREGULARES = {
