@@ -14,6 +14,7 @@
   --fuente-display: 'Fraunces', serif;
   --fuente-texto: 'IBM Plex Sans', sans-serif;
   --fuente-mono: 'IBM Plex Mono', monospace;
+  --fuente-zh: 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', 'Noto Sans SC', 'Source Han Sans SC', sans-serif;
 }
 
 * { box-sizing: border-box; }
@@ -358,3 +359,97 @@ body {
   font-size: 0.82rem;
 }
 .pie p { margin: 0; }
+
+/* =========================================================================
+   IDIOMA (Español / 中文) Y AYUDA
+   ========================================================================= */
+/* Con la interfaz en chino, las fuentes latinas se mantienen para el
+   español y el sistema usa una fuente china para los caracteres. */
+html[lang="zh-CN"] body,
+html[lang="zh-CN"] .cabecera-titulo,
+html[lang="zh-CN"] .titulo-tiempo,
+html[lang="zh-CN"] .modo-tab,
+html[lang="zh-CN"] .tiempo-btn,
+html[lang="zh-CN"] button,
+html[lang="zh-CN"] input {
+  font-family: var(--fuente-texto), var(--fuente-zh);
+}
+html[lang="zh-CN"] .cabecera-titulo { letter-spacing: 0.04em; }
+
+.cabecera-fila {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-bottom: 0.6rem;
+}
+.cabecera-fila .cabecera-marca { margin: 0; }
+
+.idioma-switch {
+  display: inline-flex;
+  border: 1px solid var(--linea);
+  border-radius: var(--radio);
+  overflow: hidden;
+}
+.idioma-btn {
+  background: transparent;
+  border: none;
+  color: var(--tiza-tenue);
+  font-family: var(--fuente-texto), var(--fuente-zh);
+  font-size: 0.85rem;
+  padding: 0.35rem 0.8rem;
+  cursor: pointer;
+}
+.idioma-btn + .idioma-btn { border-left: 1px solid var(--linea); }
+.idioma-btn:hover { color: var(--tiza); }
+.idioma-btn.is-active {
+  background: var(--tiza-amarilla);
+  color: var(--pizarra);
+  font-weight: 600;
+}
+
+.ayuda {
+  margin-top: 1.1rem;
+  border: 1px dashed var(--linea);
+  border-radius: var(--radio);
+  padding: 0.6rem 0.9rem;
+  max-width: 60ch;
+}
+.ayuda summary {
+  cursor: pointer;
+  color: var(--tiza-amarilla);
+  font-size: 0.95rem;
+  font-weight: 500;
+}
+.ayuda-pasos {
+  margin: 0.7rem 0 0.2rem;
+  padding-left: 1.3rem;
+  color: var(--tiza-tenue);
+  font-size: 0.93rem;
+}
+.ayuda-pasos li { margin-bottom: 0.4rem; }
+.ayuda-pasos b { color: var(--tiza); font-weight: 600; }
+
+/* Nombre original en español bajo el nombre chino del tiempo */
+.tiempo-btn-orig {
+  display: block;
+  font-size: 0.72rem;
+  opacity: 0.7;
+  margin-top: 0.1rem;
+}
+
+.tiempo-uso {
+  margin: -0.4rem 0 1rem;
+  padding: 0.6rem 0.8rem;
+  background: var(--pizarra-alta);
+  border-left: 2px solid var(--tiza-amarilla);
+  color: var(--tiza-tenue);
+  font-size: 0.92rem;
+}
+
+.ejercicio-pista {
+  margin: -0.5rem 0 0.8rem;
+  color: var(--tiza-tenue);
+  font-size: 0.88rem;
+}

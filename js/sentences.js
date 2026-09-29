@@ -87,7 +87,12 @@ function generarEjercicio(infinitivo, tiempoKey, formas) {
   const plantilla = plantillas[Math.floor(Math.random() * plantillas.length)];
   const respuesta = formas[personaIdx];
 
-  const conSujeto = plantilla.replace('{suj}', SUJETOS[personaIdx]);
+  // El sujeto va con mayúscula solo si abre la oración ("Yo...", pero
+  // "Ayer, yo..."); si no, iría "Ayer, Yo...".
+  const sujeto = plantilla.startsWith('{suj}')
+    ? SUJETOS[personaIdx]
+    : SUJETOS[personaIdx].toLowerCase();
+  const conSujeto = plantilla.replace('{suj}', sujeto);
   const conInfinitivo = conSujeto.replace('(INF)', '(' + infinitivo + ')');
   const partes = conInfinitivo.split('___');
 

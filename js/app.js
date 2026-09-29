@@ -54,8 +54,12 @@ function init() {
   els.ejercicioNuevo = document.getElementById('ejercicio-nuevo');
   els.ejercicioFeedback = document.getElementById('ejercicio-feedback');
   els.btnAleatorio = document.getElementById('btn-aleatorio');
+  els.tiempoUso = document.getElementById('tiempo-uso');
+  els.ejercicioPista = document.getElementById('ejercicio-pista');
+  els.ayudaPasos = document.getElementById('ayuda-pasos');
 
-  els.contadorVerbos.textContent = `${VERBS_DB.list.length} verbos disponibles`;
+  wireIdioma();
+  aplicarIdioma();
 
   renderModoTabs();
   renderTiempoMenu();
@@ -105,11 +109,11 @@ function renderPanel() {
   const visibles = resultadosActuales.slice(0, MAX_VISIBLES);
 
   if (!visibles.length) {
-    els.verboPanel.innerHTML = '<p class="verbo-panel-vacio">No hay verbos que coincidan.</p>';
+    els.verboPanel.innerHTML = `<p class="verbo-panel-vacio">${t('panelVacio')}</p>`;
     return;
   }
 
-  const contador = `<div class="verbo-panel-contador">${resultadosActuales.length} verbo${resultadosActuales.length === 1 ? '' : 's'}</div>`;
+  const contador = `<div class="verbo-panel-contador">${t('panelContador')(resultadosActuales.length)}</div>`;
   const items = visibles.map((v, i) => `
     <button type="button" class="verbo-item${i === indiceResaltado ? ' is-resaltado' : ''}" data-verbo="${v}" role="option">${v}</button>
   `).join('');
@@ -142,7 +146,7 @@ function wireVerboBuscador() {
       els.avisoVerbo.textContent = '';
       actualizarTodo();
     } else if (val.length > 0) {
-      els.avisoVerbo.textContent = 'Escribe un verbo terminado en -ar, -er o -ir, o elígelo de la lista.';
+      els.avisoVerbo.textContent = t('avisoVerboInvalido');
     }
   });
 
@@ -199,7 +203,7 @@ function scrollResaltadoAlaVista() {
 function renderModoTabs() {
   els.modoTabs.innerHTML = Object.keys(TENSES).map(modoKey => {
     const activo = modoKey === state.modo ? ' is-active' : '';
-    return `<button type="button" class="modo-tab${activo}" data-modo="${modoKey}">${TENSES[modoKey].label}</button>`;
+    return `<button type="button" class="modo-tab${activo}" data-modo="${modoKey}">${nombreModo(modoKey)}</button>`;
   }).join('');
 
   els.modoTabs.querySelectorAll('.modo-tab').forEach(btn => {
@@ -217,7 +221,7 @@ function renderTiempoMenu() {
   const tiempos = TENSES[state.modo].tiempos;
   els.tiempoMenu.innerHTML = tiempos.map(t => {
     const activo = t.key === state.tiempo ? ' is-active' : '';
-    return `<button type="button" class="tiempo-btn${activo}" data-tiempo="${t.key}">${t.label}</button>`;
+    return `<button type="button" class="tiempo-btn${activo}" data-tiempo="${t.key}">${nombreTiempoHtml(t)}</button>`;
   }).join('');
 
   els.tiempoMenu.querySelectorAll('.tiempo-btn').forEach(btn => {
@@ -245,8 +249,13 @@ let ejercicioActual = null;
 
 function actualizarTodo() {
   els.verboActual.textContent = state.verbo;
-  const tiempoLabel = TENSES[state.modo].tiempos.find(t => t.key === state.tiempo).label;
-  els.tiempoTitulo.textContent = `${TENSES[state.modo].label} · ${tiempoLabel}`;
+  const tiempo = TENSES[state.modo].tiempos.find(x => x.key === state.tiempo);
+  const tiempoZh = t('tiempos')[tiempo.key];
+  els.tiempoTitulo.textContent = `${nombreModo(state.modo)} · ${tiempoZh ? tiempoZh + ' · ' : ''}${tiempo.label}`;
+
+  const uso = t('usos')[tiempo.key];
+  els.tiempoUso.textContent = uso || '';
+  els.tiempoUso.hidden = !uso;
 
   formasActuales = conjugate(state.verbo, state.tiempo) || [];
   renderTabla();
@@ -255,12 +264,12 @@ function actualizarTodo() {
 
 function renderTabla() {
   if (!formasActuales.length) {
-    els.tablaBody.innerHTML = '<tr><td colspan="2">No se pudo conjugar ese verbo.</td></tr>';
+    els.tablaBody.innerHTML = `<tr><td colspan="2">${t('noConjugable')}</td></tr>`;
     return;
   }
   els.tablaBody.innerHTML = formasActuales.map((forma, i) => `
     <tr>
-      <td class="col-pronombre">${PRONOMBRES[i]}</td>
+      <td class="col-pronombre">${(t('pronombres') || PRONOMBRES)[i]}</td>
       <td class="col-forma">${forma}</td>
     </tr>
   `).join('');
@@ -288,10 +297,10 @@ function comprobarEjercicio() {
   const respuestaCorrecta = normalizar(ejercicioActual.respuesta);
 
   if (respuestaUsuario === respuestaCorrecta) {
-    els.ejercicioFeedback.textContent = '¡Correcto!';
+    els.ejercicioFeedback.textContent = t('correcto');
     els.ejercicioFeedback.className = 'ejercicio-feedback is-correcto';
   } else {
-    els.ejercicioFeedback.textContent = `No es correcto. La forma esperada es: "${ejercicioActual.respuesta}".`;
+    els.ejercicioFeedback.textContent = t('incorrecto')(ejercicioActual.respuesta);
     els.ejercicioFeedback.className = 'ejercicio-feedback is-incorrecto';
   }
 }
@@ -300,6 +309,81 @@ function escapeHtml(str) {
   const div = document.createElement('div');
   div.textContent = str;
   return div.innerHTML;
+}
+
+/* -------------------------------------------------------------------------
+   Idioma de la interfaz (ver js/i18n.js)
+   ------------------------------------------------------------------------- */
+function nombreModo(modoKey) {
+  return t('modos')[modoKey] || TENSES[modoKey].label;
+}
+
+function nombreTiempoHtml(tiempo) {
+  const zh = t('tiempos')[tiempo.key];
+  if (!zh) return escapeHtml(tiempo.label);
+  // En chino: nombre chino arriba y el nombre original en español debajo,
+  // para que aprenda también cómo se llama cada tiempo en español.
+  return `${escapeHtml(zh)}<span class="tiempo-btn-orig" lang="es">${escapeHtml(tiempo.label)}</span>`;
+}
+
+function aplicarIdioma() {
+  document.documentElement.lang = t('htmlLang');
+  document.title = t('tituloPagina');
+
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    el.textContent = t(el.dataset.i18n);
+  });
+  document.querySelectorAll('[data-i18n-title]').forEach(el => {
+    el.title = t(el.dataset.i18nTitle);
+  });
+
+  els.verboInput.placeholder = t('placeholderVerbo');
+  els.ejercicioInput.placeholder = t('placeholderEjercicio');
+  els.btnDesplegar.setAttribute('aria-label', t('ariaDesplegar'));
+  els.modoTabs.setAttribute('aria-label', t('ariaModo'));
+  els.tiempoMenu.setAttribute('aria-label', t('ariaTiempo'));
+  els.contadorVerbos.textContent = t('contadorVerbos')(VERBS_DB.list.length);
+  els.ayudaPasos.innerHTML = t('ayudaPasos').map(p => `<li>${p}</li>`).join('');
+
+  const pista = t('pistaEjercicio');
+  els.ejercicioPista.textContent = pista;
+  els.ejercicioPista.hidden = !pista;
+
+  // El aviso de verbo inválido y la corrección se vuelven a mostrar en el idioma nuevo.
+  if (els.avisoVerbo.textContent) els.avisoVerbo.textContent = t('avisoVerboInvalido');
+  els.ejercicioFeedback.textContent = '';
+  els.ejercicioFeedback.className = 'ejercicio-feedback';
+
+  document.querySelectorAll('.idioma-btn').forEach(btn => {
+    const activo = btn.dataset.idioma === idiomaActual;
+    btn.classList.toggle('is-active', activo);
+    btn.setAttribute('aria-pressed', activo ? 'true' : 'false');
+  });
+}
+
+function wireIdioma() {
+  document.querySelectorAll('.idioma-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      if (btn.dataset.idioma === idiomaActual) return;
+      idiomaActual = btn.dataset.idioma;
+      guardarIdioma(idiomaActual);
+      aplicarIdioma();
+      renderModoTabs();
+      renderTiempoMenu();
+      // Se refresca la tabla y títulos sin cambiar la oración del ejercicio.
+      const ejercicioPrevio = ejercicioActual;
+      const respuestaEscrita = els.ejercicioInput.value;
+      actualizarTodo();
+      if (ejercicioPrevio) restaurarEjercicio(ejercicioPrevio);
+      els.ejercicioInput.value = respuestaEscrita;
+    });
+  });
+}
+
+function restaurarEjercicio(ej) {
+  ejercicioActual = ej;
+  els.ejercicioTexto.innerHTML =
+    escapeHtml(ej.textoAntes) + '<span class="hueco-marcador">___</span>' + escapeHtml(ej.textoDespues);
 }
 
 document.addEventListener('DOMContentLoaded', init);

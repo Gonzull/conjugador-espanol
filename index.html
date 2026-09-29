@@ -15,13 +15,23 @@
 <div class="tablero">
 
   <header class="cabecera">
-    <p class="cabecera-marca">cuaderno de verbos</p>
-    <h1 class="cabecera-titulo">Conjugador de español</h1>
-    <p class="cabecera-sub">Elige un verbo, un modo y un tiempo. El resto se conjuga solo.</p>
+    <div class="cabecera-fila">
+      <p class="cabecera-marca" data-i18n="marca">cuaderno de verbos</p>
+      <div class="idioma-switch" role="group" aria-label="Idioma / 语言">
+        <button type="button" class="idioma-btn" data-idioma="es" lang="es">Español</button>
+        <button type="button" class="idioma-btn" data-idioma="zh" lang="zh-CN">中文</button>
+      </div>
+    </div>
+    <h1 class="cabecera-titulo" data-i18n="titulo">Conjugador de español</h1>
+    <p class="cabecera-sub" data-i18n="subtitulo">Elige un verbo, un modo y un tiempo. El resto se conjuga solo.</p>
+    <details class="ayuda">
+      <summary data-i18n="ayudaResumen">¿Cómo se usa?</summary>
+      <ol id="ayuda-pasos" class="ayuda-pasos"></ol>
+    </details>
   </header>
 
   <section class="panel panel-verbo" aria-label="Elegir verbo">
-    <label class="etiqueta" for="verbo-input">Verbo a practicar</label>
+    <label class="etiqueta" for="verbo-input" data-i18n="etiquetaVerbo">Verbo a practicar</label>
     <div class="fila-verbo">
       <div class="verbo-buscador">
         <input
@@ -38,10 +48,10 @@
         <button type="button" id="btn-desplegar" class="btn-desplegar" aria-label="Mostrar lista de verbos">▾</button>
         <div id="verbo-panel" class="verbo-panel" role="listbox" hidden></div>
       </div>
-      <button type="button" id="btn-aleatorio" class="boton-secundario" title="Elegir un verbo al azar">🎲 Al azar</button>
+      <button type="button" id="btn-aleatorio" class="boton-secundario" title="Elegir un verbo al azar" data-i18n="btnAzar" data-i18n-title="tituloAzar">🎲 Al azar</button>
     </div>
     <p id="aviso-verbo" class="aviso"></p>
-    <p class="verbo-actual-linea">Verbo seleccionado: <strong id="verbo-actual">hablar</strong> · <span id="contador-verbos"></span></p>
+    <p class="verbo-actual-linea"><span data-i18n="verboSeleccionado">Verbo seleccionado:</span> <strong id="verbo-actual">hablar</strong> · <span id="contador-verbos"></span></p>
   </section>
 
   <section class="panel" aria-label="Elegir modo y tiempo">
@@ -51,28 +61,31 @@
 
   <section class="panel panel-conjugacion" aria-label="Tabla de conjugación">
     <h2 id="tiempo-titulo" class="titulo-tiempo">Modo indicativo · Presente</h2>
+    <p id="tiempo-uso" class="tiempo-uso" hidden></p>
     <table class="tabla-conjugacion">
       <tbody id="tabla-conjugacion"></tbody>
     </table>
   </section>
 
   <section class="panel panel-ejercicio" aria-label="Ejercicio de completar">
-    <h2 class="titulo-tiempo">Completa la oración</h2>
+    <h2 class="titulo-tiempo" data-i18n="tituloEjercicio">Completa la oración</h2>
+    <p id="ejercicio-pista" class="ejercicio-pista" hidden></p>
     <p id="ejercicio-texto" class="ejercicio-texto"></p>
     <div class="fila-ejercicio">
       <input id="ejercicio-input" type="text" autocomplete="off" spellcheck="false" placeholder="Escribe la forma correcta...">
-      <button type="button" id="ejercicio-comprobar" class="boton-primario">Comprobar</button>
-      <button type="button" id="ejercicio-nuevo" class="boton-secundario">Otra oración</button>
+      <button type="button" id="ejercicio-comprobar" class="boton-primario" data-i18n="btnComprobar">Comprobar</button>
+      <button type="button" id="ejercicio-nuevo" class="boton-secundario" data-i18n="btnOtra">Otra oración</button>
     </div>
     <p id="ejercicio-feedback" class="ejercicio-feedback"></p>
   </section>
 
   <footer class="pie">
-    <p>Cobertura amplia de verbos regulares, irregulares y con cambio de raíz. Algún verbo muy poco común podría tener una excepción no contemplada.</p>
+    <p data-i18n="pie">Cobertura amplia de verbos regulares, irregulares y con cambio de raíz. Algún verbo muy poco común podría tener una excepción no contemplada.</p>
   </footer>
 
 </div>
 
+<script src="js/i18n.js"></script>
 <script src="js/verbs-data.js"></script>
 <script src="js/conjugator.js"></script>
 <script src="js/sentences.js"></script>
