@@ -88,7 +88,11 @@ function filtrarVerbos(texto) {
   if (!q) return listaOrdenada;
   const empiezaCon = listaOrdenada.filter(v => normalizarBusqueda(v).startsWith(q));
   const contiene = listaOrdenada.filter(v => !normalizarBusqueda(v).startsWith(q) && normalizarBusqueda(v).includes(q));
-  return empiezaCon.concat(contiene);
+  // En chino también se puede buscar por el significado (por ejemplo "吃" → comer).
+  const porSignificado = idiomaActual === 'zh'
+    ? listaOrdenada.filter(v => !empiezaCon.includes(v) && !contiene.includes(v) && (VERBOS_ZH[v] || '').includes(texto.trim()))
+    : [];
+  return empiezaCon.concat(contiene, porSignificado);
 }
 
 function abrirPanel(texto) {
@@ -115,7 +119,7 @@ function renderPanel() {
 
   const contador = `<div class="verbo-panel-contador">${t('panelContador')(resultadosActuales.length)}</div>`;
   const items = visibles.map((v, i) => `
-    <button type="button" class="verbo-item${i === indiceResaltado ? ' is-resaltado' : ''}" data-verbo="${v}" role="option">${v}</button>
+    <button type="button" class="verbo-item${i === indiceResaltado ? ' is-resaltado' : ''}" data-verbo="${v}" role="option">${v}${significadoZhHtml(v)}</button>
   `).join('');
   els.verboPanel.innerHTML = contador + items;
 
@@ -125,6 +129,12 @@ function renderPanel() {
       elegirVerbo(btn.dataset.verbo);
     });
   });
+}
+
+/** En chino, el significado del verbo entre paréntesis (solo en el desplegable). */
+function significadoZhHtml(v) {
+  if (idiomaActual !== 'zh' || !VERBOS_ZH[v]) return '';
+  return `<span class="verbo-item-zh" lang="zh-CN">（${escapeHtml(VERBOS_ZH[v])}）</span>`;
 }
 
 function elegirVerbo(v) {
@@ -145,6 +155,8 @@ function wireVerboBuscador() {
       state.verbo = val;
       els.avisoVerbo.textContent = '';
       actualizarTodo();
+    } else if (/[\u4e00-\u9fff]/.test(val)) {
+      els.avisoVerbo.textContent = ''; // búsqueda por significado en chino: no es un error
     } else if (val.length > 0) {
       els.avisoVerbo.textContent = t('avisoVerboInvalido');
     }

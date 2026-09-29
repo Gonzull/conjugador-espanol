@@ -58,13 +58,13 @@ const TEXTOS = {
     subtitulo: '选择一个动词、一个语式和一个时态，系统会自动完成变位。',
     ayudaResumen: '使用说明',
     ayudaPasos: [
-      '输入一个动词原形（例如 <b>hablar</b>“说话”），或点击箭头 ▾ 从列表中选择。也可以点击“随机”。',
+      '输入一个动词原形（例如 <b>hablar</b>“说话”），或点击箭头 ▾ 从列表中选择；列表中括号里是动词的中文意思。也可以直接输入中文（例如“吃”）来查找动词，或点击“随机”。',
       '选择语式：<b>陈述式</b>（indicativo，表达事实）或<b>虚拟式</b>（subjuntivo，表达愿望、怀疑、假设）。',
       '选择时态。下方表格会显示每个人称的变位形式。',
       '在练习区写出动词的正确形式来完成句子，然后点击“检查”（或按 Enter 键）。'
     ],
     etiquetaVerbo: '要练习的动词',
-    placeholderVerbo: '输入或选择一个动词（hablar, comer, tener...）',
+    placeholderVerbo: '输入西语动词或中文意思（hablar、吃、去……）',
     ariaDesplegar: '显示动词列表',
     btnAzar: '🎲 随机',
     tituloAzar: '随机选择一个动词',

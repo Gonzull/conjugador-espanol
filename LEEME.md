@@ -52,7 +52,12 @@ quiera practicar sin depender de una app de terceros.
     español (para aprender también cómo se llama);
   - bajo el título de cada tiempo hay una breve explicación en chino de
     **para qué se usa**, con un ejemplo traducido;
-  - los pronombres llevan su equivalente (yo（我）, tú（你）...).
+  - los pronombres llevan su equivalente (yo（我）, tú（你）...);
+  - en el desplegable de verbos, cada verbo muestra su significado en
+    chino entre paréntesis (hablar（说话；讲）), y se puede buscar
+    escribiendo en chino (吃 → comer, almorzar, merendar). El significado
+    aparece solo en la lista, no en la tabla: en chino los verbos no se
+    conjugan, así que no tiene sentido traducir cada forma.
 
   Los verbos, las conjugaciones y las oraciones del ejercicio siguen en
   español, porque eso es lo que se practica. Para compartir el enlace
@@ -73,6 +78,7 @@ conjugador/
 │   │                      verbos con cambio de raíz
 │   ├── conjugator.js      el motor: reglas y armado de los 14 tiempos
 │   ├── i18n.js            textos de la interfaz en español y chino
+│   ├── verbs-zh.js        significado en chino de cada verbo (desplegable)
 │   ├── sentences.js       plantillas de oraciones del ejercicio
 │   └── app.js              conecta todo con la interfaz (menús, buscador,
 │                            tabla, ejercicio)
@@ -212,8 +218,10 @@ la clave a `en`, traducir cada texto, agregar `'en'` a
 
 - No conjuga verbos reflexivos con su pronombre (me/te/se...) todavía.
 - No incluye el modo imperativo (se puede agregar más adelante).
-- En chino se traducen las indicaciones, no el significado de cada verbo
-  (sería otra mejora posible: mostrar "hablar = 说话" al elegirlo).
+- El significado en chino de cada verbo es corto (1 a 3 acepciones, como
+  un diccionario de bolsillo). Verbos con muchos usos (echar, quedar,
+  llevar...) quedan necesariamente incompletos. Los verbos escritos a
+  mano que no están en la lista se muestran sin traducción.
 - Las traducciones al chino fueron escritas sin revisión de un hablante
   nativo; conviene que la persona que la use avise si algo suena raro.
 - Puede haber alguna excepción rarísima no cubierta en verbos poco

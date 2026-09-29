@@ -117,6 +117,25 @@ un bug de mayúsculas en las oraciones del ejercicio.
 
 **Entregado:** ver v1.5 en `BITACORA.md`.
 
+Luego se aclaró que, además de `js/i18n.js` (nuevo), había archivos
+modificados (`index.html`, `app.js`, `style.css`, `sentences.js`), así
+que había que reemplazar todo; y se repasaron los comandos para
+actualizar con Git (`git add .`, `git commit`, `git push`).
+
+### 9. Significado de los verbos en chino
+
+> *"el usuario va a ser una china, va aprender español con tal que de
+> quie mas o menos el verbo sea el correcto en chino, esta bien (...) le
+> agregas la version entre parentesis, pero solo en el dropbox, ya que los
+> verbos en chino no se conjugan"*
+
+Se conversó que un verbo puede tener varios significados en chino y se
+optó por una traducción corta tipo diccionario de bolsillo. También se
+pidió una opinión sobre si aprender las conjugaciones es esencial (sí,
+pero conviene priorizar los verbos y tiempos más usados).
+
+**Entregado:** ver v1.6 en `BITACORA.md`.
+
 ---
 
 *Nota: este historial se escribió a partir de los pedidos reales de la
