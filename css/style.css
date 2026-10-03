@@ -232,6 +232,7 @@ body {
    ========================================================================= */
 .modo-tabs {
   display: flex;
+  flex-wrap: wrap;
   gap: 0.5rem;
   margin-bottom: 1rem;
 }
@@ -511,3 +512,41 @@ html[lang="zh-CN"] .cabecera-titulo { letter-spacing: 0.04em; }
 }
 .np-uso { margin: 0; color: var(--tiza-tenue); font-size: 0.85rem; }
 .np-ejemplo { margin: 0.3rem 0 0; color: var(--tiza); font-size: 0.9rem; font-style: italic; }
+
+/* =========================================================================
+   PRONOMBRES DE OBJETO (tercera pestaña)
+   ========================================================================= */
+.modo-tab { flex: 1 1 9rem; }
+
+.pron-selector { margin: 0 0 1rem; }
+.pron-elige, .pron-aviso {
+  margin: 0 0 0.6rem;
+  color: var(--tiza-tenue);
+  font-size: 0.92rem;
+}
+.pron-aviso { color: var(--tiza-amarilla); }
+.pron-chips { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+.pron-chip { min-width: 3.4rem; text-align: center; font-family: var(--fuente-mono), var(--fuente-zh); }
+.pron-chip > span:first-child { font-size: 1rem; color: var(--tiza); }
+.pron-tipo {
+  margin: 0.7rem 0 0;
+  color: var(--tiza-tenue);
+  font-size: 0.88rem;
+}
+.pron-tipo strong { color: var(--tiza-coral); font-family: var(--fuente-mono); }
+.pron-marca { color: var(--tiza-coral); }
+.pron-nota {
+  font-family: var(--fuente-texto), var(--fuente-zh);
+  font-size: 0.8rem;
+  color: var(--tiza-tenue);
+}
+.fila-invalida .col-forma { color: var(--tiza-tenue); }
+.pron-extra {
+  margin-top: 1rem;
+  padding: 0.6rem 0.8rem;
+  background: var(--pizarra-alta);
+  border-left: 2px solid var(--tiza-coral);
+}
+.pron-extra-titulo { margin: 0; color: var(--tiza-tenue); font-size: 0.88rem; }
+.pron-extra-ej { margin: 0.3rem 0 0; font-size: 0.98rem; }
+.pron-extra-ej b { color: var(--tiza-amarilla); font-family: var(--fuente-mono); font-weight: 500; }

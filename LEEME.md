@@ -42,6 +42,19 @@ quiera practicar sin depender de una app de terceros.
   - Los verbos totalmente irregulares más comunes (ser, estar, ir, tener,
     hacer, poder, decir, querer...) y sus compuestos (proponer, mantener,
     atraer, sonreír...) mediante una regla de "verbo base + prefijo".
+- **Pronombres de objeto** (tercera pestaña, junto a los dos modos): para
+  practicar frases como *yo te quiero*, *tú me llamas*, *él nos ha
+  ayudado*. Se elige el pronombre (*me, te, lo, la, le, nos, os, los, las,
+  les*) y un tiempo del indicativo, y la tabla muestra las seis personas
+  con el pronombre delante del verbo. Además:
+  - marca **reflexivo** cuando sujeto y objeto son la misma persona (*yo
+    me quiero*) y **no se usa** en las combinaciones imposibles (*yo
+    nos...*);
+  - muestra el pronombre pegado al infinitivo y al gerundio (*Voy a
+    verte. · Estoy viéndote.*);
+  - el ejercicio pide escribir pronombre + verbo (*te quiero*);
+  - en los verbos que no llevan objeto (*llegar, nacer, llover...*) avisa
+    y sugiere verbos para practicar.
 - **Formas no personales** (entre la tabla y el ejercicio): infinitivo,
   gerundio (*-ando / -iendo*) y participio (*-ado / -ido*) del verbo
   elegido, con un ejemplo de uso (*Estoy diciendo*, *He dicho*) y una
@@ -85,6 +98,7 @@ conjugador/
 │   ├── i18n.js            textos de la interfaz en español y chino
 │   ├── verbs-zh.js        significado en chino de cada verbo (desplegable)
 │   ├── sentences.js       plantillas de oraciones del ejercicio
+│   ├── pronouns.js        pronombres de objeto: datos, reglas y ejercicio
 │   └── app.js              conecta todo con la interfaz (menús, buscador,
 │                            tabla, ejercicio)
 ├── README.md             instrucciones para subirlo a GitHub Pages
@@ -222,6 +236,10 @@ la clave a `en`, traducir cada texto, agregar `'en'` a
 ## Alcance y límites conocidos
 
 - No conjuga verbos reflexivos con su pronombre (me/te/se...) todavía.
+- Pronombres de objeto: solo con los tiempos del indicativo, y un
+  pronombre a la vez (no cubre combinaciones como *te lo doy* o *se lo
+  digo*). La lista de verbos que "no llevan objeto" es prudente y hecha a
+  mano; puede haber algún verbo donde la frase resulte poco natural.
 - No incluye el modo imperativo (se puede agregar más adelante).
 - El significado en chino de cada verbo es corto (1 a 3 acepciones, como
   un diccionario de bolsillo). Verbos con muchos usos (echar, quedar,

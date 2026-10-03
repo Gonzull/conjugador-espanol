@@ -29,10 +29,15 @@ const TENSES = {
   }
 };
 
+// Tercera pestaña: pronombres de objeto. Usa los mismos 9 tiempos del
+// indicativo (el pronombre se combina con cualquiera de ellos).
+TENSES.pronombres = { label: 'Pronombres de objeto', tiempos: TENSES.indicativo.tiempos };
+
 const state = {
   verbo: 'hablar',
   modo: 'indicativo',
-  tiempo: 'ind_presente'
+  tiempo: 'ind_presente',
+  pronombre: 'te'
 };
 
 const els = {};
@@ -58,6 +63,8 @@ function init() {
   els.ejercicioPista = document.getElementById('ejercicio-pista');
   els.ayudaPasos = document.getElementById('ayuda-pasos');
   els.noPersonales = document.getElementById('no-personales');
+  els.pronSelector = document.getElementById('pron-selector');
+  els.pronExtra = document.getElementById('pron-extra');
 
   wireIdioma();
   aplicarIdioma();
@@ -266,11 +273,17 @@ function actualizarTodo() {
   const tiempoZh = t('tiempos')[tiempo.key];
   els.tiempoTitulo.textContent = `${nombreModo(state.modo)} · ${tiempoZh ? tiempoZh + ' · ' : ''}${tiempo.label}`;
 
-  const uso = t('usos')[tiempo.key];
+  const uso = enModoPronombres() ? t('pronExplica') : t('usos')[tiempo.key];
   els.tiempoUso.textContent = uso || '';
   els.tiempoUso.hidden = !uso;
 
+  const pista = enModoPronombres() && admitePronombreObjeto(state.verbo)
+    ? t('pistaPronombre') : t('pistaEjercicio');
+  els.ejercicioPista.textContent = pista;
+  els.ejercicioPista.hidden = !pista;
+
   formasActuales = conjugate(state.verbo, state.tiempo) || [];
+  renderPronombres();
   renderTabla();
   renderNoPersonales();
   renderEjercicio();
@@ -310,9 +323,92 @@ function renderNoPersonales() {
     tarjeta(t('npParticipio'), term.participio, participio, t('npUsoParticipio'), t('npEjParticipio')(participio), participio !== partRegular);
 }
 
+/* -------------------------------------------------------------------------
+   Pestaña "Pronombres de objeto" (datos y reglas en js/pronouns.js)
+   ------------------------------------------------------------------------- */
+function enModoPronombres() {
+  return state.modo === 'pronombres';
+}
+
+function pronombreActual() {
+  return PRONOMBRES_OBJETO.find(p => p.forma === state.pronombre) || PRONOMBRES_OBJETO[1];
+}
+
+function renderPronombres() {
+  const activo = enModoPronombres() && formasActuales.length > 0;
+  els.pronSelector.hidden = !activo;
+  els.pronExtra.hidden = true;
+  if (!activo) return;
+
+  // Verbos que no llevan pronombre de objeto: aviso + verbos sugeridos.
+  if (!admitePronombreObjeto(state.verbo)) {
+    els.pronSelector.innerHTML = `
+      <p class="pron-aviso">${escapeHtml(t('pronSinObjeto')(state.verbo))}</p>
+      <div class="pron-chips">${VERBOS_SUGERIDOS_PRON.map(v =>
+        `<button type="button" class="tiempo-btn" data-sugerido="${v}" lang="es">${v}${significadoZhHtml(v)}</button>`).join('')}</div>`;
+    els.pronSelector.querySelectorAll('[data-sugerido]').forEach(btn => {
+      btn.addEventListener('click', () => elegirVerbo(btn.dataset.sugerido));
+    });
+    return;
+  }
+
+  const pron = pronombreActual();
+  const glosas = t('pronGlosas');
+  els.pronSelector.innerHTML = `
+    <p class="pron-elige">${escapeHtml(t('pronElige'))}</p>
+    <div class="pron-chips">${PRONOMBRES_OBJETO.map(p => `
+      <button type="button" class="tiempo-btn pron-chip${p.forma === pron.forma ? ' is-active' : ''}" data-pron="${p.forma}" aria-pressed="${p.forma === pron.forma}">
+        <span lang="es">${p.forma}</span><span class="tiempo-btn-orig">${escapeHtml(glosas[p.forma])}</span>
+      </button>`).join('')}</div>
+    <p class="pron-tipo"><strong lang="es">${pron.forma}</strong> = ${escapeHtml(glosas[pron.forma])} · ${escapeHtml(t('pronTipos')[pron.tipo])}</p>`;
+
+  els.pronSelector.querySelectorAll('[data-pron]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      state.pronombre = btn.dataset.pron;
+      actualizarTodo();
+    });
+  });
+
+  // Pronombre pegado al infinitivo y al gerundio. Si el objeto es "me" o
+  // "nos", el ejemplo usa "tú" como sujeto para que no quede reflexivo.
+  const conTu = pron.persona === 0 || pron.persona === 3;
+  const inf = infinitivoConPronombre(state.verbo, pron.forma);
+  const ger = gerundioConPronombre(getGerundio(state.verbo), pron.forma);
+  els.pronExtra.hidden = false;
+  els.pronExtra.innerHTML = `
+    <p class="pron-extra-titulo">${escapeHtml(t('pronPegado'))}</p>
+    <p class="pron-extra-ej" lang="es">${conTu ? 'Vas a' : 'Voy a'} <b>${escapeHtml(inf)}</b>. · ${conTu ? 'Estás' : 'Estoy'} <b>${escapeHtml(ger)}</b>.</p>`;
+}
+
+function renderTablaPronombres() {
+  const pron = pronombreActual();
+  els.tablaBody.innerHTML = formasActuales.map((forma, i) => {
+    const tipo = tipoCombinacion(i, pron);
+    const sujeto = (t('pronombres') || PRONOMBRES)[i];
+    if (tipo === 'invalido') {
+      return `
+    <tr class="fila-invalida">
+      <td class="col-pronombre">${sujeto}</td>
+      <td class="col-forma">— <span class="pron-nota">${escapeHtml(t('pronNoSeUsa'))}</span></td>
+    </tr>`;
+    }
+    const etiqueta = tipo === 'reflexivo'
+      ? ` <span class="np-irregular" title="${escapeHtml(t('pronReflexivoTitulo'))}">${escapeHtml(t('pronReflexivo'))}</span>` : '';
+    return `
+    <tr>
+      <td class="col-pronombre">${sujeto}</td>
+      <td class="col-forma"><span class="pron-marca">${pron.forma}</span> ${forma}${etiqueta}</td>
+    </tr>`;
+  }).join('');
+}
+
 function renderTabla() {
   if (!formasActuales.length) {
     els.tablaBody.innerHTML = `<tr><td colspan="2">${t('noConjugable')}</td></tr>`;
+    return;
+  }
+  if (enModoPronombres() && admitePronombreObjeto(state.verbo)) {
+    renderTablaPronombres();
     return;
   }
   els.tablaBody.innerHTML = formasActuales.map((forma, i) => `
@@ -325,7 +421,9 @@ function renderTabla() {
 
 function renderEjercicio() {
   if (!formasActuales.length) return;
-  ejercicioActual = generarEjercicio(state.verbo, state.tiempo, formasActuales);
+  ejercicioActual = (enModoPronombres() && admitePronombreObjeto(state.verbo))
+    ? generarEjercicioPronombre(state.verbo, state.tiempo, formasActuales, pronombreActual())
+    : generarEjercicio(state.verbo, state.tiempo, formasActuales);
   els.ejercicioTexto.innerHTML =
     escapeHtml(ejercicioActual.textoAntes) +
     '<span class="hueco-marcador">___</span>' +
@@ -336,7 +434,7 @@ function renderEjercicio() {
 }
 
 function normalizar(str) {
-  return str.trim().toLowerCase();
+  return str.trim().toLowerCase().replace(/\s+/g, ' ');
 }
 
 function comprobarEjercicio() {
@@ -392,10 +490,6 @@ function aplicarIdioma() {
   els.tiempoMenu.setAttribute('aria-label', t('ariaTiempo'));
   els.contadorVerbos.textContent = t('contadorVerbos')(VERBS_DB.list.length);
   els.ayudaPasos.innerHTML = t('ayudaPasos').map(p => `<li>${p}</li>`).join('');
-
-  const pista = t('pistaEjercicio');
-  els.ejercicioPista.textContent = pista;
-  els.ejercicioPista.hidden = !pista;
 
   // El aviso de verbo inválido y la corrección se vuelven a mostrar en el idioma nuevo.
   if (els.avisoVerbo.textContent) els.avisoVerbo.textContent = t('avisoVerboInvalido');

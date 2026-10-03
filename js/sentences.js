@@ -33,7 +33,7 @@ const PLANTILLAS = {
   ind_pretPerfecto: [
     'Hasta ahora, {suj} ___ (INF) tres veces este año.',
     'Esta semana {suj} ___ (INF) mucho.',
-    'Todavía no {suj} ___ (INF) suficiente.'
+    '{suj} todavía no ___ (INF) suficiente.'
   ],
   ind_pluscuamperfecto: [
     'Antes de la reunión, {suj} ya ___ (INF).',
